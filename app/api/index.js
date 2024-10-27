@@ -17,6 +17,15 @@ app.post('/route/:id', (req,res) => {
     })
 })
 
+app.post('/route/:id', (req,res) => {
+    const { id } = req.params;
+
+
+    res.json({
+        message: `We recieved your ${id}`
+    })
+})
+
 app.listen(port, () => {
    console.log(`Example app listening at http://localhost:${port}`); 
 });
