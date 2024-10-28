@@ -12,7 +12,5 @@ const pool = mysql.createPool({
     database: process.env.REACT_APP_MYSQL_DATABASE
 });
 
-console.log(process.env.REACT_APP_MYSQL_HOST)
-
 // Export pool connection
 export default pool;
