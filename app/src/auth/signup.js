@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import { validCredentials } from "../common/utils";
 
 const Signup = () => {
     const [name, setName] = useState("");
@@ -11,18 +12,19 @@ const Signup = () => {
     const handleSubmit = (e) => {
         e.preventDefault(); // stop from from reloading page
     
-        alert(`This is what you entered: 
-            ${name}, ${username}, ${email}, ${password}, ${confirm}
-        `);
+        const credentials = [name, email, username, password, confirm];
+        if(validCredentials(credentials)) {
+            alert("You have been successfully registered!");
+        } else {
+            alert("Please fill in all values!");
+        }
     };
-
 
     return (
         <>
             <Link to="/">Go home</Link>
 
             <h2>Sign up</h2>
-
             <form method="post" onSubmit={(e) => handleSubmit(e)}>
                 <div style={{ display: "flex", flexDirection: "column", gap: 5, border: "1px solid black", padding: 10 }}>
                     <label for="name">Name:</label>

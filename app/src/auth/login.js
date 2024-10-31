@@ -1,15 +1,21 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import { validCredentials } from "../common/utils";
 
 const Login = () => {
     // Set state variables for username, password
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault(); // stop from from reloading page
-    
-        alert(`Your username is ${username} and your password is ${password}!`);
+
+        const credentials = [username,password];
+        if(validCredentials(credentials)) {
+            alert("You have signed in!");
+        } else {
+            alert("Please fill in all values!");
+        }
     };
 
     return (
