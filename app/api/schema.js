@@ -1,5 +1,3 @@
-import { pool } from "db.js";
-
 // Schema
 const createUsersTable = 
     `CREATE TABLE IF NOT EXISTS users (
@@ -12,29 +10,29 @@ const createUsersTable =
 ;
 
 // Create tables
-pool.getConnection((err, connection) => {
-    if (err) {
-        console.error('Error getting connection from pool:', err.message);
-        return;
-    }
-
-    console.log('Connected to MySQL pool');
-
-    // Execute the query
-    connection.query(createUsersTable, (err, results) => {
+const createTables = (pool) => {
+    pool.getConnection((err, connection) => {
         if (err) {
-            console.error('Error creating table:', err.message);
-        } else {
-            console.log('Table "users" created successfully');
+            console.error('Error getting connection from pool:', err.message);
+            return;
         }
 
-        // Release the connection back to the pool
-        connection.release();
-    });
-});
+        console.log('Connected to MySQL pool');
 
-// Close the pool when the application exits
-process.on('SIGINT', () => {
+        // Execute the query
+        connection.query(createUsersTable, (err, results) => {
+            if (err) {
+                console.error('Error creating table:', err.message);
+            } else {
+                console.log('Table "users" created successfully');
+            }
+
+            // Release the connection back to the pool
+            connection.release();
+        });
+    });
+
+    // Close the pool
     pool.end((err) => {
         if (err) {
             console.error('Error closing the pool:', err.message);
@@ -44,4 +42,6 @@ process.on('SIGINT', () => {
 
         process.exit(0);
     });
-});
+}
+
+export default createTables;
