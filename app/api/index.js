@@ -16,8 +16,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 createTables(pool);
 
 // Login router
-var login = require("./login.js");
-app.use("/login", login);
+// var login = require("./login.js");
+// app.use("/login", login);
 
 app.listen(port, () => {
    console.log(`Example app listening at http://localhost:${port}`); 
