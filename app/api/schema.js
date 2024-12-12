@@ -11,6 +11,9 @@ const createUsersTable =
 
 // Create tables
 const createTables = (pool) => {
+    // Get connection and execute query
+    console.log('\n');
+    console.log('/***** Creating tables *****/');
     pool.getConnection((err, connection) => {
         if (err) {
             console.error('Error getting connection from pool:', err.message);
@@ -18,30 +21,24 @@ const createTables = (pool) => {
         }
 
         console.log('Connected to MySQL pool');
-
         // Execute the query
         connection.query(createUsersTable, (err, results) => {
             if (err) {
-                console.error('Error creating table:', err.message);
+                console.error(`Error creating table: ${err.message}`);
             } else {
                 console.log('Table "users" created successfully');
             }
 
             // Release the connection back to the pool
             connection.release();
+
+            if (err) {
+                console.error('Error releasing connection:', err.message);
+            } else {
+                console.log('Connection released back to pool');
+            }
         });
-    });
-
-    // Close the pool
-    pool.end((err) => {
-        if (err) {
-            console.error('Error closing the pool:', err.message);
-        } else {
-            console.log('Pool closed successfully');
-        }
-
-        process.exit(0);
     });
 }
 
-export default createTables;
+export default createTables; 

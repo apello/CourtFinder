@@ -2,7 +2,7 @@ import cors from 'cors';
 import express from 'express';
 import bodyParser from 'body-parser';
 import pool from "./db.js";
-import { createTables } from "./schema.js";
+import createTables from "./schema.js";
 
 const app = express();
 const port = 3000;

@@ -4,3 +4,4 @@ export const validCredentials = (credentials) => {
 
     return true;
 };
+

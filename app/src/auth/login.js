@@ -1,18 +1,65 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { validCredentials } from "../common/utils";
+import useSignIn from 'react-auth-kit/hooks/useSignIn';
+
+const authenticate = (credentials) => {
+    const response = fetch('/api/login', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(credentials), // Send `this.state` as the body of the request
+    });
+
+    return response;
+};
 
 const Login = () => {
     // Set state variables for username, password
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
+    // react-auth-kit
+    const signIn = useSignIn();
+    
     const handleSubmit = async (e) => {
         e.preventDefault(); // stop from from reloading page
 
         const credentials = [username,password];
         if(validCredentials(credentials)) {
-            alert("You have signed in!");
+            authenticate(credentials).then(async (res) => {
+                if (res.ok) {
+                    const data = await res.json(); // Parse response JSON
+        
+                    const signInSuccess = signIn({
+                        auth: {
+                            token: data.token, // Assuming `token` is returned from API
+                            type: 'Bearer',
+                        },
+                        refresh: data.refreshToken, // Assuming `refreshToken` is returned from API
+                        userState: {
+                            name: data.userName, // Replace with actual data from API
+                            uid: data.userId,    // Replace with actual data from API
+                        },
+                    });
+        
+                    if (signInSuccess) {
+                        // Redirect or perform another action here
+                        console.log("Sign in successful!");
+                    } else {
+                        // Handle sign-in failure here
+                        console.error("Sign-in failed.");
+                    }
+                } else {
+                    // Handle response errors here, e.g., invalid credentials
+                    console.error("Login failed with status:", res.status);
+                }
+            })
+            .catch((error) => {
+                // Handle network errors here
+                console.error("Error during login:", error);
+            });
         } else {
             alert("Please fill in all values!");
         }
