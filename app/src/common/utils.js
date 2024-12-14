@@ -1,7 +1,5 @@
 export const validCredentials = (credentials) => {
-    for(let value of credentials) 
-        if(value === "") return false;
-
-    return true;
+    const { username, password } = credentials;
+    return username.trim() && password.trim(); // Ensure non-empty strings
 };
 

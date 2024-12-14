@@ -3,65 +3,75 @@ import { useState } from "react";
 import { validCredentials } from "../common/utils";
 import useSignIn from 'react-auth-kit/hooks/useSignIn';
 
-const authenticate = (credentials) => {
-    const response = fetch('/api/login', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(credentials), // Send `this.state` as the body of the request
-    });
-
-    return response;
-};
-
 const Login = () => {
     // Set state variables for username, password
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const [error, setError] = useState("");
 
     // react-auth-kit
     const signIn = useSignIn();
+
+    const authenticate = async (credentials) => {
+        try {
+            // Send request with user info to back-end
+            const response = await fetch('http://localhost:8080/authenticate', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(credentials),
+            });
     
+            // Check for error
+            if (!response.ok) {
+                const error = await response.json();
+                console.error('Response error:', error.message);
+                throw new Error(error.message); // Throw error with message
+            }
+    
+            return await response.json(); // Return parsed JSON if successful
+        } catch (error) {
+            if (error.name === 'TypeError') {
+                // Handle network-related errors specifically
+                console.error('Network error:', error);
+                throw new Error('Network error, please try again later.');
+            }
+    
+            // Re-throw original error for other cases
+            throw error;
+        }
+    };
+        
     const handleSubmit = async (e) => {
         e.preventDefault(); // stop from from reloading page
 
-        const credentials = [username,password];
+        const credentials = { username,password };
         if(validCredentials(credentials)) {
-            authenticate(credentials).then(async (res) => {
-                if (res.ok) {
-                    const data = await res.json(); // Parse response JSON
-        
-                    const signInSuccess = signIn({
-                        auth: {
-                            token: data.token, // Assuming `token` is returned from API
-                            type: 'Bearer',
-                        },
-                        refresh: data.refreshToken, // Assuming `refreshToken` is returned from API
-                        userState: {
-                            name: data.userName, // Replace with actual data from API
-                            uid: data.userId,    // Replace with actual data from API
-                        },
-                    });
-        
-                    if (signInSuccess) {
-                        // Redirect or perform another action here
-                        console.log("Sign in successful!");
-                    } else {
-                        // Handle sign-in failure here
-                        console.error("Sign-in failed.");
+            try {
+                const response = await authenticate(credentials);
+
+                var signInSuccess = signIn({
+                    auth: {
+                        token: response.token,
+                        type: 'Bearer'
                     }
+                });
+    
+                if (signInSuccess) {
+                    // Redirect or perform another action here
+                    setError("Sign in successful!");
                 } else {
-                    // Handle response errors here, e.g., invalid credentials
-                    console.error("Login failed with status:", res.status);
+                    // Handle sign-in failure here
+                    setError("Login failed: sign-in failed.");
                 }
-            })
-            .catch((error) => {
-                // Handle network errors here
-                console.error("Error during login:", error);
-            });
+            } catch(error) {
+                // Handle  errors here
+                console.log(error);
+                setError(`Login failed: ${error}`);
+            }
         } else {
-            alert("Please fill in all values!");
+            setError("Login failed: Please fill in all values!");
         }
     };
 
@@ -70,6 +80,8 @@ const Login = () => {
             <Link to="/">Go home</Link>
 
             <h2>Login form:</h2>
+
+            <p>{error}</p>
             <form method="post" onSubmit={(e) => handleSubmit(e)}>
                 <div style={{ display: "flex", flexDirection: "column", gap: 5, border: "1px solid black", padding: 10 }}>
                     <label for="username">Username:</label>
