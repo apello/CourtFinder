@@ -9,10 +9,7 @@ const pool = mysql2.createPool({
     host: process.env.REACT_APP_MYSQL_HOST,
     user: process.env.REACT_APP_MYSQL_USER,
     password: process.env.REACT_APP_MYSQL_PASSWORD || '',
-    database: process.env.REACT_APP_MYSQL_DATABASE,
-    waitForConnections: true,
-    connectionLimit: 10,
-    queueLimit: 0
+    database: process.env.REACT_APP_MYSQL_DATABASE
 });
 
 // Export pool connection
