@@ -8,7 +8,7 @@ dotenv.config();
 const pool = mysql2.createPool({
     host: process.env.REACT_APP_MYSQL_HOST,
     user: process.env.REACT_APP_MYSQL_USER,
-    password: process.env.REACT_APP_MYSQL_PASSWORD || '',
+    password: process.env.REACT_APP_MYSQL_PASSWORD,
     database: process.env.REACT_APP_MYSQL_DATABASE
 });
 
