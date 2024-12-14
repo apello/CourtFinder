@@ -51,6 +51,7 @@ const Login = () => {
             try {
                 const response = await authenticate(credentials);
 
+                // Doesn't work right now, but says success
                 var signInSuccess = signIn({
                     auth: {
                         token: response.token,
