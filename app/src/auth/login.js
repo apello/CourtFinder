@@ -1,7 +1,9 @@
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { validCredentials } from "../common/utils";
 import useSignIn from 'react-auth-kit/hooks/useSignIn';
+import { useNavigate } from 'react-router-dom';
+import { useLocation } from "react-router-dom";
 
 const Login = () => {
     // Set state variables for username, password
@@ -9,13 +11,19 @@ const Login = () => {
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
 
-    // react-auth-kit
     const signIn = useSignIn();
+    const navigate = useNavigate();
+
+    // Receive parameters from url
+    const params = useLocation().state;
+    useEffect(() => {
+        if(params) setError(params.message);
+    },[params]);
 
     const authenticate = async (credentials) => {
         try {
             // Send request with user info to back-end
-            const response = await fetch('http://localhost:8080/authenticate', {
+            const response = await fetch('http://localhost:8080/authenticate', { // Url for server
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -32,13 +40,14 @@ const Login = () => {
     
             return await response.json(); // Return parsed JSON if successful
         } catch (error) {
+            // Check if network error
             if (error.name === 'TypeError') {
                 // Handle network-related errors specifically
                 console.error('Network error:', error);
                 throw new Error('Network error, please try again later.');
             }
     
-            // Re-throw original error for other cases
+            // Else re-throw original error
             throw error;
         }
     };
@@ -46,32 +55,39 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault(); // stop from from reloading page
 
+        setError(""); // Clear message
+
         const credentials = { username,password };
         if(validCredentials(credentials)) {
             try {
                 const response = await authenticate(credentials);
 
+                // Use react-auth-kit sign-in function
                 var signInSuccess = signIn({
                     auth: {
                         token: response.token,
                         type: 'Bearer'
+                    },
+                    userState: { // TODO: Add some more user data
+                        username: username
                     }
                 });
     
+                // Redirect to dashboard
                 if (signInSuccess) {
-                    // Redirect or perform another action here
-                    setError("Sign in successful!");
+                    // TODO: Add pending state
+                    navigate("/dashboard");
                 } else {
                     // Handle sign-in failure here
-                    setError("Login failed: sign-in failed.");
+                    setError("Sign-in unsuccessful. Please try again!");
                 }
             } catch(error) {
-                // Handle  errors here
+                // Handle  errors 
                 console.log(error);
-                setError(`Login failed: ${error}`);
+                setError(error.message);
             }
         } else {
-            setError("Login failed: Please fill in all values!");
+            setError("Error: Please fill in all values!");
         }
     };
 

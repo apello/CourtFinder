@@ -23,16 +23,18 @@ router.post("/authenticate", async (req, res) => {
     const query = "SELECT * FROM users WHERE username = ? AND password = ?";
 
     try {
+        // Query database
         const data = await executeQuery(query, [username, password]);
+
         // Check length
         if(data.length === 0){
-            return res.status(404).json({ message: "No user found." })
+            return res.status(404).json({ message: "Email/password do not match." })
         }
 
         // Compare passwords
         // const isMatch = await bcrypt.compare(password, user.password);
         // if(!isMatch){
-        //     return res.status(500).json({ message: "Email/password are incorrect!" })
+        //     return res.status(500).json({ message: "Email/password do match." })
         // }
 
         const user = data[0];
@@ -45,7 +47,8 @@ router.post("/authenticate", async (req, res) => {
                 username: user.username, 
                 email: user.email
             },
-            process.env.JWT_SECRET // Randomly generated hash, check .env
+            process.env.JWT_SECRET, // Randomly generated hash, check .env
+            { expiresIn: '1h' }, // Token needs expiration or else login will not work
         );
 
         // Send token to login
