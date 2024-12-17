@@ -38,6 +38,7 @@ const Home = () => {
         sx={{
           fontWeight: "xl",
           fontSize: "clamp(1.875rem, 1.3636rem + 2.1818vw, 3rem)",
+          color: "#FFFFFF", // The Color
         }}
       >
         Discover, book, and play at your nearest courts with ease!
