@@ -6,10 +6,11 @@ import { useNavigate } from 'react-router-dom';
 import { useLocation } from "react-router-dom";
 
 const Login = () => {
-    // Set state variables for username, password
+    // Set state variables 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
+    const [pending, setPending] = useState(false);
 
     const signIn = useSignIn();
     const navigate = useNavigate();
@@ -53,15 +54,19 @@ const Login = () => {
     };
         
     const handleSubmit = async (e) => {
-        e.preventDefault(); // stop from from reloading page
+        e.preventDefault(); // Stop from from reloading page
 
         setError(""); // Clear message
 
         const credentials = { username,password };
         if(validCredentials(credentials)) {
             try {
-                const response = await authenticate(credentials);
+                // Loading variable to give users feedback
+                setPending(true);
 
+                // Send credentials to back-end for authentication
+                const response = await authenticate(credentials);
+                
                 // Use react-auth-kit sign-in function
                 var signInSuccess = signIn({
                     auth: {
@@ -74,6 +79,7 @@ const Login = () => {
                 });
     
                 // Redirect to dashboard
+                setPending(false);
                 if (signInSuccess) {
                     // TODO: Add pending state
                     navigate("/dashboard");
@@ -84,9 +90,11 @@ const Login = () => {
             } catch(error) {
                 // Handle  errors 
                 console.log(error);
+                setPending(false);
                 setError(error.message);
             }
         } else {
+            setPending(false);
             setError("Error: Please fill in all values!");
         }
     };
@@ -97,7 +105,7 @@ const Login = () => {
 
             <h2>Login form:</h2>
 
-            <p>{error}</p>
+            <p>{ pending ? "Loading..." : error }</p>
             <form method="post" onSubmit={(e) => handleSubmit(e)}>
                 <div style={{ display: "flex", flexDirection: "column", gap: 5, border: "1px solid black", padding: 10 }}>
                     <label for="username">Username:</label>

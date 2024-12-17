@@ -1,7 +1,10 @@
 import cors from 'cors';
 import express from 'express';
 import bodyParser from 'body-parser';
-import createTables from "./schema.js";
+
+// Database connection/creation
+import pool from './db.js';
+import createTables from './models/schema.js';
 
 // Routes
 import authenticate from "./routes/authenticate.js";
@@ -15,7 +18,7 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true })); 
 
 // Create tables
-// createTables(pool);
+createTables(pool);
 
 // Login router
 app.use("/", authenticate);
