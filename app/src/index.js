@@ -6,7 +6,9 @@ import ReactDOM from 'react-dom/client';
 // react-auth-kit
 import AuthProvider from 'react-auth-kit';
 import createStore from 'react-auth-kit/createStore';
-import AuthOutlet from '@auth-kit/react-router/AuthOutlet';
+
+// Material UI Joy
+import CssBaseline from '@mui/joy/CssBaseline';
 
 // pages
 import Home from './home.js';
@@ -18,29 +20,30 @@ import DashboardLayout from './components/dashboard-layout.js';
 
 export const App = () => {
   const store = createStore({
-    authName:'_auth',
-    authType:'cookie',
+    authName: '_auth',
+    authType: 'cookie',
     cookieDomain: window.location.hostname,
     cookieSecure: window.location.protocol === 'https:',
   });
 
-  // TODO: Add private routing
   return (
     <AuthProvider store={store}>
+      <CssBaseline />
       <BrowserRouter>
         <Routes>
-          <Route element={<DefaultLayout />} >
+          {/* DefaultLayout for general pages */}
+          <Route element={<DefaultLayout />}>
             <Route index element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
           </Route>
 
-          <Route path="/dashboard" element={<DashboardLayout />} >
+          {/* DashboardLayout for protected routes */}
+          <Route path="/dashboard" element={<DashboardLayout />}>
             <Route index element={<Listings />} />
           </Route>
         </Routes>
       </BrowserRouter>
-      
     </AuthProvider>
   );
 };
@@ -48,6 +51,6 @@ export const App = () => {
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-      <App />
+    <App />
   </React.StrictMode>
 );
