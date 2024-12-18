@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { validCredentials } from "../common/utils";
+import { validCredentials, authenticate } from "../common/utils";
 import useSignIn from 'react-auth-kit/hooks/useSignIn';
 import { useNavigate } from 'react-router-dom';
 import { useLocation } from "react-router-dom";
@@ -21,49 +21,14 @@ const Login = () => {
         if(params) setError(params.message);
     },[params]);
 
-    const authenticate = async (credentials) => {
-        try {
-            // Send request with user info to back-end
-            const response = await fetch('http://localhost:8080/authenticate', { // Url for server
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(credentials),
-            });
-    
-            // Check for error
-            if (!response.ok) {
-                const error = await response.json();
-                console.error('Response error:', error.message);
-                throw new Error(error.message); // Throw error with message
-            }
-    
-            return await response.json(); // Return parsed JSON if successful
-        } catch (error) {
-            // Check if network error
-            if (error.name === 'TypeError') {
-                // Handle network-related errors specifically
-                console.error('Network error:', error);
-                throw new Error('Network error, please try again later.');
-            }
-    
-            // Else re-throw original error
-            throw error;
-        }
-    };
-        
     const handleSubmit = async (e) => {
         e.preventDefault(); // Stop from from reloading page
-
         setError(""); // Clear message
+        setPending(true); // Loading variable to give users feedback
 
         const credentials = { username,password };
         if(validCredentials(credentials)) {
             try {
-                // Loading variable to give users feedback
-                setPending(true);
-
                 // Send credentials to back-end for authentication
                 const response = await authenticate(credentials);
                 
@@ -90,13 +55,13 @@ const Login = () => {
             } catch(error) {
                 // Handle  errors 
                 console.log(error);
-                setPending(false);
                 setError(error.message);
             }
         } else {
-            setPending(false);
             setError("Error: Please fill in all values!");
         }
+
+        setPending(false); // Stop loading state after attempt
     };
 
     return (

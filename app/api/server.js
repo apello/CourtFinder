@@ -18,7 +18,7 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true })); 
 
 // Create tables
-createTables(pool);
+// createTables(pool);
 
 // Login router
 app.use("/", authenticate);
