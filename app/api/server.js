@@ -17,8 +17,8 @@ app.use(cors());
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true })); 
 
-// Create tables
-createTables(pool);
+// Create tables - you can comment this out after creating tables
+// createTables(pool);
 
 // Login router
 app.use("/", authenticate);

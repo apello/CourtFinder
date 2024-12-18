@@ -125,6 +125,8 @@ const Login = () => {
                         maxlength="50"
                         onChange={(e) => setPassword(e.target.value)} />
 
+                    <Link to="/">Forgot your password?</Link>
+
                     <input type="submit" />
                 </div>
             </form>
