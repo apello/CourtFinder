@@ -28,10 +28,9 @@ const Login = () => {
 
         const credentials = { username,password };
         if(validCredentials(credentials)) {
-            try {
-                // Send credentials to back-end for authentication
-                const response = await authenticate(credentials);
-                
+            // Send credentials to back-end for authentication
+            const response = await authenticate(credentials);
+            if(response.token) {
                 // Use react-auth-kit sign-in function
                 var signInSuccess = signIn({
                     auth: {
@@ -52,10 +51,9 @@ const Login = () => {
                     // Handle sign-in failure here
                     setError("Sign-in unsuccessful. Please try again!");
                 }
-            } catch(error) {
-                // Handle  errors 
-                console.log(error);
-                setError(error.message);
+            } else {
+                // Handle errors 
+                setError(`Error: ${response.message || "Something went wrong. Please try again!"}`);
             }
         } else {
             setError("Error: Please fill in all values!");
@@ -89,8 +87,6 @@ const Login = () => {
                         placeholder="Enter your password:"
                         maxlength="50"
                         onChange={(e) => setPassword(e.target.value)} />
-
-                    <Link to="/">Forgot your password?</Link>
 
                     <input type="submit" />
                 </div>
