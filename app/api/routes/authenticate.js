@@ -1,36 +1,26 @@
 import express from "express";
 import jwt from "jsonwebtoken";
 import pool from "../db.js";
+import { executeQuery } from "../../src/common/utils.js";
 // import bcrypt from 'bcrypt';
 
 var router = express.Router();
-
-// TODO: move this to utils to be used for register also
-const executeQuery = (query, params) => {
-    return new Promise((resolve, reject) => {
-        pool.query(query, params, (err, results) => {
-            if(err) {
-                return reject(err);
-            }
-            resolve(results);
-        });
-    });
-}
 
 router.post("/authenticate", async (req, res) => {
     const { username, password } = req.body;
     // TODO: Switch to ORMs
     const query = "SELECT * FROM users WHERE username = ? AND password = ?";
 
-
     // Query database
-    const data = await executeQuery(query, [username, password]);
+    const data = await executeQuery(pool, query, [username, password]);
 
-    // if(!data) res.status(500)
+    // Throw errors
+    if(!data) {
+        return res.status(500).json({ error: "Unable to connect to network" });
+    }
 
-    // Check length
     if(!data.length){
-        return res.status(401).json({ message: "Invalid credentials" })
+        return res.status(401).json({ error: "Invalid credentials" });
     }
 
     // Compare passwords
@@ -54,7 +44,7 @@ router.post("/authenticate", async (req, res) => {
     );
 
     // Send token to login
-    res.status(200).json({ token: jwtToken });
+    res.json({ token: jwtToken });
 });
 
 export default router;

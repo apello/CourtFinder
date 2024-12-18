@@ -53,7 +53,7 @@ const Login = () => {
                 }
             } else {
                 // Handle errors 
-                setError(`Error: ${response.message || "Something went wrong. Please try again!"}`);
+                setError(`Error: ${response.error || "Something went wrong. Please try again!"}`);
             }
         } else {
             setError("Error: Please fill in all values!");
