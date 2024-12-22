@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import courtPicture from "../photos/Court1.jpg";
+import courtPicture from "../Photos/Court3.jpg";
 import { useEffect, useState } from "react";
 import { getListings } from "../common/utils";
 

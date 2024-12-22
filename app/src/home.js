@@ -7,84 +7,108 @@ import Typography from "@mui/joy/Typography";
 import ArrowForward from "@mui/icons-material/ArrowForward";
 import Box from "@mui/joy/Box";
 
-// Import your background image
-import Court1 from "./photos/Court1.jpg";
+// Import your image
+import Court3 from "./Photos/Court3.jpg";
 
 const Home = () => {
   return (
     <Box
       sx={{
         display: "flex",
-        flexDirection: "column",
         alignItems: "center",
-        justifyContent: "center",
+        justifyContent: "space-between",
         height: "100vh",
-        textAlign: "center",
         padding: 2,
         gap: 3,
-        backgroundImage: `url(${Court1})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-        color: "white", // Ensures text is visible on top of the image
+        backgroundColor: "#F0F0F0", // Optional light background for the whole page
       }}
     >
-      <Typography color="primary" sx={{ fontSize: "lg", fontWeight: "lg" }}>
-        Welcome to CourtFinder!
-      </Typography>
-
-      <Typography
-        level="h1"
+      {/* Left Side - Image */}
+      <Box
+        component="img"
+        src={Court3}
+        alt="Court"
         sx={{
-          fontWeight: "xl",
-          fontSize: "clamp(1.875rem, 1.3636rem + 2.1818vw, 3rem)",
-          color: "#FFFFFF", // The Color
+          width: "50%",
+          height: "100%",
+          objectFit: "cover",
+        }}
+      />
+
+      {/* Right Side - Content */}
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          textAlign: "center",
+          padding: 3,
+          width: "50%",
+          backgroundColor: "#FFFFFF", // White background
+          color: "#000000", // Black text color
+          boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)", // Optional subtle shadow
         }}
       >
-        Discover, book, and play at your nearest courts with ease!
-      </Typography>
+        <Typography color="primary" sx={{ fontSize: "lg", fontWeight: "lg" }}>
+          Welcome to CourtFinder!
+        </Typography>
 
-      <Typography
-        textColor="text.secondary"
-        sx={{ fontSize: "lg", lineHeight: "lg", color: "inherit" }}
-      >
-        Choose an option below to get started with your journey.
-      </Typography>
+        <Typography
+          level="h1"
+          sx={{
+            fontWeight: "xl",
+            fontSize: "clamp(1.875rem, 1.3636rem + 2.1818vw, 3rem)",
+            color: "#000000", // Black for header
+          }}
+        >
+          Discover, book, and play at your nearest courts with ease!
+        </Typography>
 
-      <Box sx={{ display: "flex", gap: 2 }}>
-        <Button
-          component={RouterLink}
-          to="/login"
-          size="lg"
-          variant="outlined"
-          endDecorator={<ArrowForward fontSize="xl" />}
-          sx={{ color: "white", borderColor: "white" }}
+        <Typography
+          textColor="text.secondary"
+          sx={{ fontSize: "lg", lineHeight: "lg", color: "#333333" }} // Dark gray text
         >
-          Log In
-        </Button>
-        <Button
-          component={RouterLink}
-          to="/signup"
-          size="lg"
-          variant="contained"
-          endDecorator={<ArrowForward fontSize="xl" />}
-        >
-          Sign Up
-        </Button>
+          Choose an option below to get started with your journey.
+        </Typography>
+
+        <Box sx={{ display: "flex", gap: 2 }}>
+          <Button
+            component={RouterLink}
+            to="/login"
+            size="lg"
+            variant="outlined"
+            endDecorator={<ArrowForward fontSize="xl" />}
+            sx={{ color: "#000000", borderColor: "#000000" }} // Black outline button
+          >
+            Log In
+          </Button>
+          <Button
+            component={RouterLink}
+            to="/signup"
+            size="lg"
+            variant="contained"
+            endDecorator={<ArrowForward fontSize="xl" />}
+            sx={{ backgroundColor: "#1976d2", color: "#FFFFFF" }} // Default button styling
+          >
+            Sign Up
+          </Button>
+        </Box>
+
+        <Typography>
+          Already a member?{" "}
+          <Link
+            component={RouterLink}
+            to="/login"
+            sx={{ fontWeight: "lg", color: "#1976d2" }} // Blue link
+          >
+            Log in
+          </Link>
+        </Typography>
       </Box>
-
-      <Typography>
-        Already a member?{" "}
-        <Link
-          component={RouterLink}
-          to="/login"
-          sx={{ fontWeight: "lg", color: "white" }}
-        >
-          Log in
-        </Link>
-      </Typography>
     </Box>
   );
 };
 
 export default Home;
+
