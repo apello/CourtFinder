@@ -1,101 +1,148 @@
-import { Link } from "react-router-dom";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
+import { Link as RouterLink, useNavigate, useLocation } from "react-router-dom";
 import { validCredentials, authenticate } from "../common/utils";
-import useSignIn from 'react-auth-kit/hooks/useSignIn';
-import { useNavigate } from 'react-router-dom';
-import { useLocation } from "react-router-dom";
+import useSignIn from "react-auth-kit/hooks/useSignIn";
+import Box from "@mui/joy/Box";
+import Typography from "@mui/joy/Typography";
+import Button from "@mui/joy/Button";
+import Input from "@mui/joy/Input";
+import Alert from "@mui/joy/Alert";
+import Divider from "@mui/joy/Divider";
+
+// Import background image
+import Court3 from "../Photos/Court3.jpg";
 
 const Login = () => {
-    // Set state variables 
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
-    const [error, setError] = useState("");
-    const [pending, setPending] = useState(false);
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [pending, setPending] = useState(false);
 
-    const signIn = useSignIn();
-    const navigate = useNavigate();
+  const signIn = useSignIn();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const params = location.state;
 
-    // Receive parameters from url
-    const params = useLocation().state;
-    useEffect(() => {
-        if(params) setError(params.message);
-    },[params]);
+  useEffect(() => {
+    if (params) setError(params.message);
+  }, [params]);
 
-    const handleSubmit = async (e) => {
-        e.preventDefault(); // Stop from from reloading page
-        setError(""); // Clear message
-        setPending(true); // Loading variable to give users feedback
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+    setPending(true);
 
-        const credentials = { username,password };
-        if(validCredentials(credentials)) {
-            // Send credentials to back-end for authentication
-            const response = await authenticate(credentials);
-            if(response.token) {
-                // Use react-auth-kit sign-in function
-                var signInSuccess = signIn({
-                    auth: {
-                        token: response.token,
-                        type: 'Bearer'
-                    },
-                    userState: { // TODO: Add some more user data
-                        username: username
-                    }
-                });
-    
-                // Redirect to dashboard
-                setPending(false);
-                if (signInSuccess) {
-                    // TODO: Add pending state
-                    navigate("/dashboard");
-                } else {
-                    // Handle sign-in failure here
-                    setError("Sign-in unsuccessful. Please try again!");
-                }
-            } else {
-                // Handle errors 
-                setError(`Error: ${response.error || "Something went wrong. Please try again!"}`);
-            }
+    const credentials = { username, password };
+    if (validCredentials(credentials)) {
+      const response = await authenticate(credentials);
+      if (response.token) {
+        const signInSuccess = signIn({
+          auth: {
+            token: response.token,
+            type: "Bearer",
+          },
+          userState: { username },
+        });
+
+        setPending(false);
+        if (signInSuccess) {
+          navigate("/dashboard");
         } else {
-            setError("Error: Please fill in all values!");
+          setError("Sign-in unsuccessful. Please try again!");
         }
+      } else {
+        setError(`Error: ${response.error || "Something went wrong. Please try again!"}`);
+      }
+    } else {
+      setError("Error: Please fill in all values!");
+    }
 
-        setPending(false); // Stop loading state after attempt
-    };
+    setPending(false);
+  };
 
-    return (
-        <>
-            <Link to="/">Go home</Link>
+  return (
+    <Box
+      sx={{
+        display: "flex",
+        height: "100vh",
+        backgroundColor: "#F0F0F0",
+      }}
+    >
+      {/* Left Side with Image */}
+      <Box
+        component="img"
+        src={Court3}
+        alt="Court"
+        sx={{
+          width: "50%",
+          height: "100%",
+          objectFit: "cover",
+        }}
+      />
 
-            <h2>Login form:</h2>
+      {/* Right Side with Form */}
+      <Box
+        sx={{
+          width: "50%",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          padding: 4,
+          backgroundColor: "#FFFFFF",
+          boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
+        }}
+      >
+        <Typography level="h2" sx={{ marginBottom: 2 }}>
+          Login
+        </Typography>
 
-            <p>{ pending ? "Loading..." : error }</p>
-            <form method="post" onSubmit={(e) => handleSubmit(e)}>
-                <div style={{ display: "flex", flexDirection: "column", gap: 5, border: "1px solid black", padding: 10 }}>
-                    <label for="username">Username:</label>
-                    {/* update the username everytime the input is changed, i.e., typed into */}
-                    <input 
-                        type="text" 
-                        name="username" 
-                        placeholder="Enter your username:" 
-                        maxlength="50"
-                        onChange={(e) => setUsername(e.target.value)} />
+        {error && <Alert color="danger" sx={{ marginBottom: 2 }}>{error}</Alert>}
 
-                    <label for="password">Password:</label>
-                    <input 
-                        type="password" 
-                        name="password" 
-                        placeholder="Enter your password:"
-                        maxlength="50"
-                        onChange={(e) => setPassword(e.target.value)} />
+        <form
+          onSubmit={handleSubmit}
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            width: "100%",
+            maxWidth: "400px",
+            gap: "1rem",
+          }}
+        >
+          <Input
+            type="text"
+            placeholder="Enter your username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+          />
+          <Input
+            type="password"
+            placeholder="Enter your password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+          <Button type="submit" disabled={pending} variant="solid">
+            {pending ? "Loading..." : "Log In"}
+          </Button>
+        </form>
 
-                    <input type="submit" />
-                </div>
-            </form>
+        <Divider sx={{ width: "100%", margin: "2rem 0" }}>or</Divider>
 
-            <br />
-            <Link to="/signup">Don't have an account? Sign up</Link>
-        </>
-    );
+        <Typography>
+          Don't have an account?{" "}
+          <RouterLink to="/signup" style={{ textDecoration: "none", color: "#1976D2" }}>
+            Sign up
+          </RouterLink>
+        </Typography>
+
+        <RouterLink to="/" style={{ textDecoration: "none", marginTop: "1rem", color: "#1976D2" }}>
+          Go home
+        </RouterLink>
+      </Box>
+    </Box>
+  );
 };
 
 export default Login;
