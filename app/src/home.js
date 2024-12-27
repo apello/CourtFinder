@@ -8,7 +8,7 @@ import ArrowForward from "@mui/icons-material/ArrowForward";
 import Box from "@mui/joy/Box";
 
 // Import your image
-import Court3 from "./Photos/Court3.jpg";
+import Court3 from "./photos/Court3.jpg";
 
 const Home = () => {
   return (

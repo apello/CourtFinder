@@ -10,7 +10,7 @@ import Alert from "@mui/joy/Alert";
 import Divider from "@mui/joy/Divider";
 
 // Import background image
-import Court3 from "../Photos/Court3.jpg";
+import Court3 from "../photos/Court3.jpg";
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -46,7 +46,7 @@ const Login = () => {
 
         setPending(false);
         if (signInSuccess) {
-          navigate("/dashboard");
+          navigate("/listings");
         } else {
           setError("Sign-in unsuccessful. Please try again!");
         }

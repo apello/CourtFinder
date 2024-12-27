@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import courtPicture from "../Photos/Court3.jpg";
+import courtPicture from "../photos/Court3.jpg";
 import { useEffect, useState } from "react";
 import { getListings } from "../common/utils";
 
@@ -36,6 +36,7 @@ const Listings = () => {
         <p style={{ color: "red" }}>{error}</p>
       ) : (
         <>
+          <p style={{ marginLeft: "10px" }}>{listings.length} {listings.length === 1 ? "listing" : "listings"} found</p>
           <main
             style={{
               display: "flex",
@@ -87,7 +88,6 @@ const Listings = () => {
               </div>
             ))}
           </main>
-          <p>{listings.length} {listings.length === 1 ? "listing" : "listings"} found</p>
         </>
       )}
     </div>

@@ -1,5 +1,4 @@
-// routing
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import ReactDOM from 'react-dom/client';
 
@@ -11,12 +10,14 @@ import createStore from 'react-auth-kit/createStore';
 import CssBaseline from '@mui/joy/CssBaseline';
 
 // pages
-import Home from './home.js';
-import Login from './auth/login.js';
-import Signup from './auth/signup.js';
-import Listings from './dashboard/listings.js';
-import DefaultLayout from './components/DefaultLayout.js';
-import DashboardLayout from './components/DashboardLayout.js';
+const Home = lazy(() => import('./home.js'));
+const Login = lazy(() => import('./auth/login.js'));
+const Signup = lazy(() => import('./auth/signup.js'));
+const Listing = lazy(() => import('./features/listing.js'));
+const Listings = lazy(() => import('./features/featureListings.js'));
+const DefaultLayout = lazy(() => import('./components/DefaultLayout.js'));
+const DashboardLayout = lazy(() => import('./components/DashboardLayout.js'));
+
 
 export const App = () => {
   const store = createStore({
@@ -29,21 +30,25 @@ export const App = () => {
   return (
     <AuthProvider store={store}>
       <CssBaseline />
-      <BrowserRouter>
-        <Routes>
-          {/* DefaultLayout for general pages */}
-          <Route element={<DefaultLayout />}>
-            <Route index element={<Home />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<Signup />} />
-          </Route>
+      <Suspense fallback={<div>Loading...</div>}>
+        <BrowserRouter>
+          <Routes>
 
-          {/* DashboardLayout for protected routes */}
-          <Route path="/dashboard" element={<DashboardLayout />}>
-            <Route index element={<Listings />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
+            <Route element={<DefaultLayout />}>
+              <Route index element={<Home />} />
+              <Route path="login" element={<Login />} />
+              <Route path="signup" element={<Signup />} />
+            </Route>
+
+            <Route path="/" element={<DashboardLayout />}>
+              <Route index path="listings" element={<Listings />} />
+              <Route path="listings/:id" element={<Listing />} />
+            </Route>
+
+            <Route path="*" element={<div>Not Found</div>} />
+          </Routes>
+        </BrowserRouter>
+      </Suspense>
     </AuthProvider>
   );
 };
