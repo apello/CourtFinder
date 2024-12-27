@@ -48,7 +48,7 @@ export const getListings = async () => {
     return await response.json();
 };
 
-// Return single listing
+// Return one listing
 // HTTP GET
 export const getListing = async (id) => {
     const response = await fetch(

@@ -1,15 +1,16 @@
+// React && router
 import React, { lazy, Suspense } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import ReactDOM from 'react-dom/client';
 
-// react-auth-kit
+// React-auth-kit
 import AuthProvider from 'react-auth-kit';
 import createStore from 'react-auth-kit/createStore';
 
 // Material UI Joy
 import CssBaseline from '@mui/joy/CssBaseline';
 
-// pages
+// Pages
 const Home = lazy(() => import('./home.js'));
 const Login = lazy(() => import('./auth/login.js'));
 const Signup = lazy(() => import('./auth/signup.js'));
@@ -17,7 +18,6 @@ const Listing = lazy(() => import('./features/listing.js'));
 const Listings = lazy(() => import('./features/featureListings.js'));
 const DefaultLayout = lazy(() => import('./components/DefaultLayout.js'));
 const DashboardLayout = lazy(() => import('./components/DashboardLayout.js'));
-
 
 export const App = () => {
   const store = createStore({

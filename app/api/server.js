@@ -6,7 +6,7 @@ import bodyParser from 'body-parser';
 import pool from './db.js';
 import createTables from './models/schema.js';
 
-// Routes
+// Routes handlers
 import loginHandler from "./routes/loginHandler.js";
 import listingsHandler from "./routes/listingsHandler.js";
 

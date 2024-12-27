@@ -1,39 +1,18 @@
 import React from 'react';
-import { Outlet } from "react-router-dom";
-import IconButton from '@mui/joy/IconButton';
-import DarkModeRoundedIcon from '@mui/icons-material/DarkModeRounded';
-import LightModeRoundedIcon from '@mui/icons-material/LightModeRounded';
-import { CssVarsProvider, useColorScheme } from '@mui/joy/styles';
-
-function ColorSchemeToggle() {
-    const { mode, setMode } = useColorScheme();
-    return (
-        <IconButton
-            size="lg"
-            variant="soft"
-            color="neutral"
-            onClick={() => setMode(mode === 'light' ? 'dark' : 'light')}
-            sx={{
-                position: 'fixed',
-                top: '1rem',
-                right: '1rem',
-                zIndex: 999,
-                borderRadius: '50%',
-                boxShadow: 'sm',
-            }}
-        >
-            {mode === 'light' ? <DarkModeRoundedIcon /> : <LightModeRoundedIcon />}
-        </IconButton>
-    );
-}
+import { Link, Outlet } from "react-router-dom";
+import { CssVarsProvider } from '@mui/joy/styles';
+import ColorSchemeToggle from './ColorSchemeToggle';
 
 const DefaultLayout = ({ children }) => {
     return (
         <CssVarsProvider>
-            {/* Dark/Light Mode Toggle */}
-            <ColorSchemeToggle />
             <header>
-                <h2>CourtFinder</h2>
+                <div style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 20px' }}>
+                    <Link to="/">
+                        <h2 style={{ margin: 0 }}>CourtFinder</h2>
+                    </Link>
+                    <ColorSchemeToggle />
+                </div>
             </header>
             <main>
                 {children}
