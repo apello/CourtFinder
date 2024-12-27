@@ -90,7 +90,6 @@ const Listings = () => {
           <p>{listings.length} {listings.length === 1 ? "listing" : "listings"} found</p>
         </>
       )}
-      {!loading && !listings.length && !error && <p>No listings found.</p>}
     </div>
   );
 };

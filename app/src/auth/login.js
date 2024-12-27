@@ -93,54 +93,57 @@ const Login = () => {
           boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
         }}
       >
-        <Typography level="h2" sx={{ marginBottom: 2 }}>
-          Login
-        </Typography>
+            <Typography level="h2" sx={{ marginBottom: 2 }}>
+                Login
+            </Typography>
 
-        {error && <Alert color="danger" sx={{ marginBottom: 2 }}>{error}</Alert>}
+            {error && <Alert color="danger" sx={{ marginBottom: 2 }}>{error}</Alert>}
 
-        <form
-          onSubmit={handleSubmit}
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            width: "100%",
-            maxWidth: "400px",
-            gap: "1rem",
-          }}
-        >
-          <Input
-            type="text"
-            placeholder="Enter your username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-          />
-          <Input
-            type="password"
-            placeholder="Enter your password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-          <Button type="submit" disabled={pending} variant="solid">
-            {pending ? "Loading..." : "Log In"}
-          </Button>
-        </form>
+            <form
+                onSubmit={handleSubmit}
+                style={{
+                display: "flex",
+                flexDirection: "column",
+                width: "100%",
+                maxWidth: "400px",
+                gap: "1rem",
+                }}
+            >
+                <Input
+                type="text"
+                placeholder="Enter your username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                required
+                />
+                <Input
+                type="password"
+                placeholder="Enter your password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                />
+                <Button type="submit" disabled={pending} variant="solid">
+                {pending ? "Loading..." : "Log In"}
+                </Button>
 
-        <Divider sx={{ width: "100%", margin: "2rem 0" }}>or</Divider>
+                <Divider sx={{ width: "100%", margin: "2rem 0" }}>or</Divider>
+                <RouterLink to="/forgot-password">Forgot password?</RouterLink>
 
-        <Typography>
-          Don't have an account?{" "}
-          <RouterLink to="/signup" style={{ textDecoration: "none", color: "#1976D2" }}>
-            Sign up
-          </RouterLink>
-        </Typography>
+                <input type="submit" />
+                </form>
 
-        <RouterLink to="/" style={{ textDecoration: "none", marginTop: "1rem", color: "#1976D2" }}>
-          Go home
-        </RouterLink>
-      </Box>
+            <Typography>
+                Don't have an account?{" "}
+                <RouterLink to="/signup" style={{ textDecoration: "none", color: "#1976D2" }}>
+                Sign up
+                </RouterLink>
+            </Typography>
+
+            <RouterLink to="/" style={{ textDecoration: "none", marginTop: "1rem", color: "#1976D2" }}>
+                Go home
+            </RouterLink>
+        </Box>
     </Box>
   );
 };

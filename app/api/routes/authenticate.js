@@ -15,13 +15,13 @@ router.post("/authenticate", async (req, res) => {
     const data = await executeQuery(pool, query, [username, password]);
 
     // Throw errors
-    if(!data) {
-        return res.status(500).json({ error: "Unable to connect to network" });
-    }
-
-    if(!data.length){
-        return res.status(401).json({ error: "Invalid credentials" });
-    }
+    if(!data) return res.status(500).json({ 
+        error: "Unable to connect to network" 
+    });
+   
+    if(!data.length) return res.status(401).json({ 
+        error: "Invalid credentials" 
+    });
 
     // Compare passwords
     // const isMatch = await bcrypt.compare(password, user.password);
