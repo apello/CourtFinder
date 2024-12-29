@@ -46,7 +46,7 @@ const Login = () => {
 
         setPending(false);
         if (signInSuccess) {
-          navigate("/listings");
+          navigate("/");
         } else {
           setError("Sign-in unsuccessful. Please try again!");
         }

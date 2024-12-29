@@ -45,59 +45,29 @@ const Listings = () => {
               marginBottom: "20px",
             }}
           >
-            <div style={{ display: "flex", alignItems: "center" }}>
-              <input
-                type="text"
-                placeholder="Search listings..."
-                style={{
-                  padding: "15px",
-                  borderRadius: "25px",
-                  border: "1px solid #ddd",
-                  width: "300px",
-                  outline: "none",
-                  fontSize: "1rem",
-                }}
-              />
-              <button
-                style={{
-                  backgroundColor: "grey", // Pink color
-                  border: "none",
-                  borderRadius: "50%",
-                  padding: "12px",
-                  marginLeft: "-45px", // Overlap with the input field
-                  cursor: "pointer",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                <img
-                  src="https://img.icons8.com/ios-filled/50/ffffff/search.png"
-                  alt="search"
-                  style={{ width: "15px", height: "15px" }}
-                />
-              </button>
-            </div>
-    
-            <select
+            <input
+              type="text"
+              placeholder="Search listings..."
               style={{
-                padding: "10px",
-                borderRadius: "5px",
                 border: "1px solid #ddd",
-                fontSize: "1rem",
+                width: "300px",
               }}
-            >
+            />
+  
+            <select style={{ border: "1px solid #ddd" }}>
               <option value="">Filter by Category</option>
               <option value="category1">Category 1</option>
               <option value="category2">Category 2</option>
               <option value="category3">Category 3</option>
             </select>
 
+            <input type="submit" />
+
             <p style={{ marginLeft: "10px" }}>
               {listings.length} {listings.length === 1 ? "listing" : "listings"} found
             </p>
           </div>
-          
+
           <main
             style={{
               display: "flex",
@@ -114,12 +84,13 @@ const Listings = () => {
                 style={{
                   width: "300px",
                   overflow: "hidden", // Ensures the content doesn't overflow the border radius
+                  border: "1px solid #ddd",
                 }}
               >
                 <div
                   id="box-image"
                   style={{
-                    height: "300px",
+                    height: "200px",
                     width: "100%",
                     overflow: "hidden", // Keeps the image within the box
                   }}
@@ -132,7 +103,6 @@ const Listings = () => {
                       style={{
                         height: "100%",
                         width: "100%",
-                        borderRadius: "8px",
                         objectFit: "cover", // Ensures image fills the box without stretching
                       }}
                     />
@@ -141,7 +111,7 @@ const Listings = () => {
                 <div
                   id="box-content"
                   style={{
-                    padding: "10px",
+                    padding: "5px",
                     boxSizing: "border-box",
                   }}
                 >
@@ -150,19 +120,15 @@ const Listings = () => {
                       id="title"
                       style={{
                         fontWeight: "bold", // Bold title
-                        marginBottom: "2px",
                         fontSize: "1.2rem",
                       }}
                     >
                       {listing.title}
                     </p>
-                    <p id="description" style={{ marginBottom: "2px" }}>
+                    <p id="description">
                       {listing.description}
                     </p>
-                    <p
-                      id="price"
-                      style={{ marginBottom: "5px" }}
-                    >
+                    <p id="price">
                       <strong>${listing.price_per_hour}</strong>/hr
                     </p>
                   </div>

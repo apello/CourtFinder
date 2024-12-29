@@ -34,16 +34,17 @@ export const App = () => {
         <BrowserRouter>
           <Routes>
 
-            <Route element={<DefaultLayout />}>
-              <Route index element={<Home />} />
-              <Route path="login" element={<Login />} />
-              <Route path="signup" element={<Signup />} />
-            </Route>
+            {/* <Route element={<DefaultLayout />}> */}
+              {/* <Route index element={<Home />} /> */}
+            {/* </Route> */}
 
             <Route path="/" element={<DashboardLayout />}>
-              <Route index path="listings" element={<Listings />} />
+              <Route index element={<Listings />} />
               <Route path="listings/:id" element={<Listing />} />
             </Route>
+
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
 
             <Route path="*" element={<div>Not Found</div>} />
           </Routes>

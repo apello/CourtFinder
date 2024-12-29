@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
-import { getListing } from "../common/utils";
+import { getListing, formatTime } from "../common/utils";
 
 import img from "../photos/Court3.jpg";
 
@@ -8,14 +8,6 @@ const Listing = () => {
   const [listing, setListing] = useState();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
-  // Helper function to format time from 24-hour to 12-hour format
-  const formatTime = (time) => {
-    const [hour, minute] = time.split(":");
-    const period = hour >= 12 ? "PM" : "AM";
-    const formattedHour = hour % 12 || 12;
-    return `${formattedHour}:${minute} ${period}`;
-  };
 
   let { id } = useParams(); // listing id
 
@@ -41,8 +33,13 @@ const Listing = () => {
 
   return (
     <div style={{ padding: "20px", fontFamily: "Arial, sans-serif", maxWidth: "1200px", margin: "0 auto" }}>
-      <Link to="/listings" style={{ textDecoration: "none", color: "#007bff", fontSize: "14px", marginBottom: "10px", display: "inline-block" }}>
-        Back
+      <Link to="/listings" style={{ 
+        textDecoration: "underline", 
+        color: "#007bff", 
+        fontSize: "14px",
+        display: "inline-block"
+      }}>
+        &lt; Back 
       </Link>
       {loading ? (
         <p>Loading listing...</p>

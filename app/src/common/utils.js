@@ -11,6 +11,14 @@ export const sleep = async (ms) => {
     return await new Promise(resolve => setTimeout(resolve, ms || 1000));
 };
 
+// Helper function to format time from 24-hour to 12-hour format
+export const formatTime = (time) => {
+    const [hour, minute] = time.split(":");
+    const period = hour >= 12 ? "PM" : "AM";
+    const formattedHour = hour % 12 || 12;
+    return `${formattedHour}:${minute} ${period}`;
+};
+
 // For querying data from the database
 export const executeQuery = (pool, query, params) => {
     return new Promise((resolve, reject) => {
