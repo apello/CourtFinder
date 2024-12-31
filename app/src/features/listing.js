@@ -33,7 +33,7 @@ const Listing = () => {
 
   return (
     <div style={{ padding: "20px", fontFamily: "Arial, sans-serif", maxWidth: "1200px", margin: "0 auto" }}>
-      <Link to="/listings" style={{ 
+      <Link to="/" style={{ 
         textDecoration: "underline", 
         color: "#007bff", 
         fontSize: "14px",
